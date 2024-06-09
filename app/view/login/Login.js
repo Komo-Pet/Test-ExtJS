@@ -9,7 +9,7 @@ Ext.define('MyApp.view.login.Login', {
 
     controller: 'login',
     bodyPadding: 10,
-    title: 'Login Window',
+    title: 'Окно входа',
     closable: false,
     autoShow: true,
 
@@ -20,22 +20,22 @@ Ext.define('MyApp.view.login.Login', {
             id: 'username',
             xtype: 'textfield',
             name: 'username',
-            fieldLabel: 'Username',
+            fieldLabel: 'Пользователь',
             allowBlank: false
         }, {
             id: 'password',
             xtype: 'textfield',
             name: 'password',
             inputType: 'password',
-            fieldLabel: 'Password',
+            fieldLabel: 'Пароль',
             allowBlank: false
         }, {
             xtype: 'displayfield',
             hideEmptyLabel: false,
-            value: 'Enter any non-blank password'
+            value: 'Введите Ваш пароль.'
         }],
         buttons: [{
-            text: 'Login',
+            text: 'Войти',
             formBind: true,
             listeners: {
                 click: 'onLoginClick'

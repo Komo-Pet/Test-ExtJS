@@ -3,7 +3,19 @@ Ext.define('MyApp.view.main.MainController', {
 
     alias: 'controller.main',
 
-    onItemSelected: function (sender, record) {
+    createNewField: function () {
+        var tabPanel = this.getView(),
+            tab = tabPanel.add({
+                title: 'Товары',
+                items: [{
+                    xtype: 'mainlist'
+                }]
+            });
+
+        tabPanel.setActiveTab(tab);
+    },
+
+    onLogOut: function (sender, record) {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
     },
 
@@ -20,5 +32,24 @@ Ext.define('MyApp.view.main.MainController', {
             xtype: 'login'
             });   
         }
+    },
+    createWindow: function () {
+        var me = this;
+        var desktop = this.app.getDesktop();
+        var win = desktop.getWindow('itemmanagement-win');
+        if (!win) {
+            win = desktop.createWindow({
+                id: 'itemmanagement-win',
+                title: 'Item Management',
+                width: 600,
+                height: 505,
+                iconCls: 'icon-itemmanagement',
+                animCollapse: false,
+                constrainHeader: true,
+                layout: 'fit'
+            });
+        }
+        win.show();
+        return win;
     }
 });

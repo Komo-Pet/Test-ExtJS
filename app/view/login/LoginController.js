@@ -17,6 +17,8 @@ Ext.define('MyApp.view.login.LoginController', {
         Ext.create({
             xtype: 'app-main'
         });
+        }else{
+            alert('Неверный пароль или логин. Попробуйте еще раз.')
         }
         // This would be the ideal location to verify the user's credentials via
         // a server-side lookup. We'll just move forward for the sake of this example.

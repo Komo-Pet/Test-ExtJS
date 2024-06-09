@@ -83,5 +83,6 @@
 
 .x-panel-header-title-navigation > .x-title-text-navigation:after {
     top: 30px;
-    right: -24px;
+    right: 24px;
+    visibility: hidden;
 }

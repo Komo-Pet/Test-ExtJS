@@ -6,10 +6,9 @@ Ext.define('MyApp.store.Personnel', {
     model: 'MyApp.model.Personnel',
 
     data: { items: [
-        { name: 'Jean Luc', email: "jeanluc.picard@enterprise.com", phone: "555-111-1111" },
-        { name: 'Worf',     email: "worf.moghsson@enterprise.com",  phone: "555-222-2222" },
-        { name: 'Deanna',   email: "deanna.troi@enterprise.com",    phone: "555-333-3333" },
-        { name: 'Data',     email: "mr.data@enterprise.com",        phone: "555-444-4444" }
+        { ID: '1', name: 'Notebook Lenovo', description: 'Ноутбук ThinkPad T460', price: '100', count: '2'},
+        { ID: '2', name: 'Keyboard OKCLICK', description: 'Клавиатура OKCLIK 140M', price: '50', count: '8'},
+        { ID: '3', name: 'Network adapter', description: 'Сетевой адаптер WiFi D-Link', price: '7', count: '0'}
     ]},
 
     proxy: {

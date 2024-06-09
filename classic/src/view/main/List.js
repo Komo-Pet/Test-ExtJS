@@ -7,7 +7,7 @@ Ext.define('MyApp.view.main.List', {
     xtype: 'mainlist',
 
     requires: [
-        'MyApp.store.Store',
+        'MyApp.store.Personnel',
     ],
     title: 'Список товаров',
 

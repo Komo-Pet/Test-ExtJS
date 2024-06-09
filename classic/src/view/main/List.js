@@ -16,13 +16,14 @@ Ext.define('MyApp.view.main.List', {
     },
 
     items:[{
+        itemId: 'IDFilter',
         padding:10,
         xtype: 'textfield',
         emptyText: 'Введите фильтр...',
-        reference: 'IDfilter',
+        reference: 'ID',
         publishes: 'value',
-        fieldLabel: 'IDfilter',
-        displayField: 'IDfilter',
+        fieldLabel: 'ID',
+        displayField: 'ID',
         minChars: 0,
         queryMode: 'local',
         typeAhead: true,
@@ -33,7 +34,9 @@ Ext.define('MyApp.view.main.List', {
         listeners: {
             keydown: (event, opts) => {
                 if (opts.keyCode == Ext.event.Event.ENTER) {
-                    
+                    var IDValue = Ext.ComponentQuery.query('#IDFilter')[0].getValue();
+                    console.log(IDValue);
+                    Ext.ComponentQuery.query.up('store').down('data')
                 }
             }
         }
@@ -160,7 +163,10 @@ Ext.define('MyApp.view.main.List', {
                 }
             }
     }],
-
+    bbar: {
+        xtype: 'pagingtoolbar',
+        emptyMsg: "No topics to display",
+    }
     
     
 });

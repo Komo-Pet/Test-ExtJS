@@ -1,18 +1,30 @@
+let i = toString(1);
+
 Ext.define('MyApp.view.main.MainController', {
     extend: 'Ext.app.ViewController',
 
     alias: 'controller.main',
 
+    onTabChange: function(tabs, newTab, oldTab) {
+        Ext.suspendLayouts();
+        newTab.setTitle('Active Tab');
+        oldTab.setTitle('Inactive Tab');
+        Ext.resumeLayouts(true);
+    },
+
     createNewField: function () {
+        //debugger;
+        i = toString(parseInt(i)+ 1);
         var tabPanel = this.getView(),
             tab = tabPanel.add({
                 title: 'Товары',
+                name: 'Tab'+i,
                 items: [{
-                    xtype: 'mainlist'
+                    xtype: 'mainlist',
                 }]
             });
-
         tabPanel.setActiveTab(tab);
+        console.log();
     },
 
     onLogOut: function (sender, record) {

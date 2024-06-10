@@ -1,6 +1,32 @@
-/**
- * This view is an example list of people.
- */
+
+
+filterGrid = function (grid, property, value) {
+    //debugger;
+    
+    if (grid.store.filters) {
+         grid.store.filters.each(function(item) {
+          if (item.property === property) {
+              grid.store.removeFilter(item);
+          }  
+        })
+    };
+   
+    if (value) {
+        grid.store.addFilter({
+            filterFn: function (record) {
+                switch (property){
+                    case 'ID':
+                    return value == record.get(property);
+                    case 'description':
+                    return record.get(property).indexOf(value) >= 0;
+                }
+                
+            }
+        });
+        grid.store.filters.getAt(grid.store.filters.length-1).property=property;
+    }
+};
+
 
 Ext.define('MyApp.view.main.List', {
     extend: 'Ext.form.Panel',
@@ -14,13 +40,14 @@ Ext.define('MyApp.view.main.List', {
     store: {
         type: 'personnel'
     },
-
+    
     items:[{
+        //id: 'test',
         itemId: 'IDFilter',
         padding:10,
         xtype: 'textfield',
         emptyText: 'Введите фильтр...',
-        reference: 'ID',
+        //reference: 'ID',
         publishes: 'value',
         fieldLabel: 'ID',
         displayField: 'ID',
@@ -32,11 +59,11 @@ Ext.define('MyApp.view.main.List', {
         },
         enableKeyEvents: true,
         listeners: {
-            keydown: (event, opts) => {
-                if (opts.keyCode == Ext.event.Event.ENTER) {
-                    var IDValue = Ext.ComponentQuery.query('#IDFilter')[0].getValue();
-                    console.log(IDValue);
-                    Ext.ComponentQuery.query.up('store').down('data')
+            specialkey: (field, event) => { 
+                if(event.getKey()==event.ENTER){
+                    //debugger;
+                    const filter_id = field.getValue();  
+                    filterGrid(field.up().query('gridpanel')[0], 'ID', filter_id);
                 }
             }
         }
@@ -45,7 +72,7 @@ Ext.define('MyApp.view.main.List', {
         padding:10,
         xtype: 'textfield',
         emptyText: 'Введите фильтр...',
-        reference: 'description',
+        //reference: 'description',
         publishes: 'value',
         fieldLabel: 'Описание',
         displayField: 'description',
@@ -55,11 +82,20 @@ Ext.define('MyApp.view.main.List', {
         store: {
             type: 'personnel'
         },
+        enableKeyEvents: true,
+        listeners: {
+            specialkey: (field, event) => { 
+                if(event.getKey()==event.ENTER){
+                    const descSubString = field.getValue();
+                    //debugger;  
+                    filterGrid(field.up().query('gridpanel')[0], 'description', descSubString);
+                }
+            }
+        }
     },
     {
             xtype: 'gridpanel',
-    
-            height: 400,
+            itemId: 'gridPanel',
             columnWidth: 0.65,
     
             bind: {
@@ -109,57 +145,79 @@ Ext.define('MyApp.view.main.List', {
                 }
             }],
             listeners: {
-                select: function () {
-                    new Ext.form.Panel({
-                        width: 400,
-                        height: 350,
-                        title: 'Карточка товара:' + this.up('#name'),
-                        floating: true,
-                        closable: true,
-                        items:[{
-                            xtype: 'displayfield',
-                            fieldLabel: 'ID',
-                            name: 'ID',
-                            value: '1',
-                            allowBlank: false,
-                            padding:10
+                cellclick: function (gridView,htmlElement,columnIndex,dataRecord) {
+                    //debugger;
+                    if(columnIndex == 1){
+                        debugger;
+                        new Ext.form.Panel({
+                            xtype: 'cardInfo',
+                            width: 400,
+                            height: 350,
+                            itemId: 'cardInfo',
+                            title: 'Карточка товара:' + dataRecord.data.name,
+                            floating: true,
+                            closable: true,
+                            items:{
+                                xtype: 'form',
+                                reference: 'form',
+                            items:[{
+                                xtype: 'displayfield',
+                                fieldLabel: 'ID',
+                                name: 'ID',
+                                value: dataRecord.data.ID,
+                                allowBlank: false,
+                                padding:10
+                            },
+                            {
+                                xtype: 'displayfield',
+                                fieldLabel: 'Наименование',
+                                name: 'name',
+                                value: dataRecord.data.description,
+                                allowBlank: false,
+                                padding:10
+                            },
+                            {
+                                xtype: 'numberfield',
+                                fieldLabel: 'Цена',
+                                name: 'price',
+                                value: dataRecord.data.price,
+                                allowBlank: false,
+                                padding:10
+                            },
+                            {
+                                xtype: 'numberfield',
+                                fieldLabel: 'Количество',
+                                name: 'count',
+                                value: dataRecord.data.count,
+                                allowBlank: false,
+                                padding:10
+                            }],
+                            buttons: [{
+                                id: 'Save',
+                                text: 'Сохранить',
+                                disabled: true,
+                                //formBind: true,
+                                listeners:{
+                                    click: function(){
+                                        debugger;
+                                    }
+                                }
+                            },
+                            {
+                                text: 'Отмена',
+                                handler: function(){
+                                    //debugger;
+                                    Ext.ComponentQuery.query('#cardInfo')[0].close();
+                                }
+                            }]
                         },
-                        {
-                            xtype: 'displayfield',
-                            fieldLabel: 'Наименование',
-                            name: 'name',
-                            value: '1',
-                            allowBlank: false,
-                            padding:10
-                        },
-                        {
-                            xtype: 'numberfield',
-                            fieldLabel: 'Цена',
-                            name: 'price',
-                            value: 25,
-                            allowBlank: false,
-                            padding:10
-                        },
-                        {
-                            xtype: 'numberfield',
-                            fieldLabel: 'Количество',
-                            name: 'count',
-                            value: 25,
-                            allowBlank: false,
-                            padding:10
-                        }],
-                        buttons:[{
-                            text: 'Сохранить',
-                            formBind: true,
-                            listeners:{
-
+                        listeners: {
+                            onchange: function() {
+                                
                             }
-                        },
-                        {
-                            text: 'Отмена',
-                            formBind: false,
-                        }],
-                    }).show();
+                        }
+                        }).show();
+                    }
                 }
             }
     }],

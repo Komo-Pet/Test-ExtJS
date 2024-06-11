@@ -124,6 +124,7 @@ Ext.define('MyApp.view.main.List', {
                 flex: 1,
                 sortable: true,
             }, {
+                itemId: 'price',
                 text: 'Цена',
                 dataIndex: 'price',
     
@@ -148,7 +149,8 @@ Ext.define('MyApp.view.main.List', {
                 cellclick: function (gridView,htmlElement,columnIndex,dataRecord) {
                     //debugger;
                     if(columnIndex == 1){
-                        debugger;
+                        //debugger;
+                        
                         new Ext.form.Panel({
                             xtype: 'cardInfo',
                             width: 400,
@@ -164,6 +166,7 @@ Ext.define('MyApp.view.main.List', {
                                 xtype: 'displayfield',
                                 fieldLabel: 'ID',
                                 name: 'ID',
+                                itemId: 'ID',
                                 value: dataRecord.data.ID,
                                 allowBlank: false,
                                 padding:10
@@ -176,10 +179,11 @@ Ext.define('MyApp.view.main.List', {
                                 allowBlank: false,
                                 padding:10
                             },
-                            {
+                            {   
                                 xtype: 'numberfield',
                                 fieldLabel: 'Цена',
                                 name: 'price',
+                                itemId: 'cardPrice',
                                 value: dataRecord.data.price,
                                 allowBlank: false,
                                 padding:10
@@ -188,6 +192,7 @@ Ext.define('MyApp.view.main.List', {
                                 xtype: 'numberfield',
                                 fieldLabel: 'Количество',
                                 name: 'count',
+                                itemId: 'cardCount',
                                 value: dataRecord.data.count,
                                 allowBlank: false,
                                 padding:10
@@ -195,11 +200,33 @@ Ext.define('MyApp.view.main.List', {
                             buttons: [{
                                 id: 'Save',
                                 text: 'Сохранить',
-                                disabled: true,
-                                //formBind: true,
+                                //disabled: true,
+                                formBind: true,
                                 listeners:{
                                     click: function(){
-                                        debugger;
+                                        //debugger;
+                                        var arrayID = Ext.ComponentQuery.query('#ID')[0].getValue();
+                                        var validPrice = Ext.ComponentQuery.query('#cardPrice')[0].getValue();
+                                        var validCount = Ext.ComponentQuery.query('#cardCount')[0].getValue();
+                                        if((Number.isSafeInteger(validCount)) && (!isNaN(validPrice)) && (!isNaN(validCount) && (validCount >= 0) && (validPrice >= 0))) {
+                                            Ext.getStore('storage').getAt(arrayID-1).set(
+                                                'count',
+                                                validCount)
+                                            Ext.getStore('storage').getAt(arrayID-1).set(
+                                                'price',
+                                                validPrice,
+                                                Ext.ComponentQuery.query('#cardInfo')[0].close()
+                                            );
+                                            alert('Данные были изменены');
+                                            var mainlistLength = Ext.ComponentQuery.query('mainlist').length-1;
+                                            for (let i = 0;
+                                                 i <= mainlistLength ;
+                                                 i++){
+                                                Ext.ComponentQuery.query('gridpanel')[i].getView().refresh();
+                                            }
+                                        } else{
+                                            alert('Данные неверные, данные должны быть неотрицательными, а количество товаров не может быть дробным числом')
+                                        }
                                     }
                                 }
                             },
@@ -211,11 +238,11 @@ Ext.define('MyApp.view.main.List', {
                                 }
                             }]
                         },
-                        listeners: {
-                            onchange: function() {
-                                
-                            }
-                        }
+                        //listeners: {
+                        //    InputEvent: function() {
+                        //        Ext.ComponentQuery.query('#Save')[0].setDisabled(false)
+                        //    }
+                        //}
                         }).show();
                     }
                 }

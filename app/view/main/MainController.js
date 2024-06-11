@@ -27,6 +27,8 @@ Ext.define('MyApp.view.main.MainController', {
         console.log();
     },
 
+    
+
     onLogOut: function (sender, record) {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
     },

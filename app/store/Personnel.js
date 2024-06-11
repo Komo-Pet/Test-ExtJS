@@ -1,10 +1,10 @@
 Ext.define('MyApp.store.Personnel', {
     extend: 'Ext.data.Store',
-
+    storeId: 'storage',
     alias: 'store.personnel',
-
+    autoLoad: true,
     model: 'MyApp.model.Personnel',
-
+    
     data: { items: [
         { ID: '1', name: 'Notebook Lenovo', description: 'Ноутбук ThinkPad T460', price: '100', count: '2'},
         { ID: '2', name: 'Keyboard OKCLICK', description: 'Клавиатура OKCLIK 140M', price: '50', count: '8'},

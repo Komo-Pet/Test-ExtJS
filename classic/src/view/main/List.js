@@ -208,6 +208,11 @@ Ext.define('MyApp.view.main.List', {
                                         var arrayID = Ext.ComponentQuery.query('#ID')[0].getValue();
                                         var validPrice = Ext.ComponentQuery.query('#cardPrice')[0].getValue();
                                         var validCount = Ext.ComponentQuery.query('#cardCount')[0].getValue();
+                                        var oldDataPrice = Ext.getStore('storage').getAt(arrayID-1).get('price');
+                                        var oldDataCount = Ext.getStore('storage').getAt(arrayID-1).get('count');
+                                        if ((oldDataPrice != validPrice) || (oldDataCount != validCount)){
+                                            
+                                        
                                         if((Number.isSafeInteger(validCount)) && (!isNaN(validPrice)) && (!isNaN(validCount) && (validCount >= 0) && (validPrice >= 0))) {
                                             Ext.getStore('storage').getAt(arrayID-1).set(
                                                 'count',
@@ -226,6 +231,9 @@ Ext.define('MyApp.view.main.List', {
                                             }
                                         } else{
                                             alert('Данные неверные, данные должны быть неотрицательными, а количество товаров не может быть дробным числом')
+                                        }
+                                        } else{
+
                                         }
                                     }
                                 }
